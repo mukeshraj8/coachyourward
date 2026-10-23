@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.rekhank.study",
+    "sha256_cert_fingerprints": ["19:40:80:87:61:4B:59:26:D1:83:AC:21:2D:3D:17:AC:42:55:B9:E0:2A:06:A4:E1:A7:AE:DA:15:BC:7E:4D:AD"]
+  }
+}]

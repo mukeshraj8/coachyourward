@@ -1,0 +1,45 @@
+// Trusted Web Activity: the app opens https://study.rekhank.app full screen in Chrome, so Google sign-in,
+// offline mode and progress sync work exactly as on the website.
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "app.rekhank.study"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "app.rekhank.study"
+        minSdk 21
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // The signing key lives in the repository so every build can update the installed app.
+    // For a Play Store release, Google Play App Signing holds the real key.
+    signingConfigs {
+        release {
+            storeFile file("../coachyourward.keystore")
+            storePassword "coachyourward"
+            keyAlias "coachyourward"
+            keyPassword "coachyourward"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation "com.google.androidbrowserhelper:androidbrowserhelper:2.5.0"
+}
