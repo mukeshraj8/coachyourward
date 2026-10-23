@@ -1,0 +1,48 @@
+/* Batch 6: more written questions for English and Sanskrit so full papers reach 80 marks. */
+addTo("english", "written", [
+  { ch: "ff-anne", marks: 3, q: "How did Anne turn Mr Keesing's punishment into a success? (40–50 words)",
+    a: "Mr Keesing gave Anne essays as punishment for talking. Her last one, 'Quack, Quack, Quack, Said Mistress Chatterbox', was a funny poem about a mother duck and her ducklings. Mr Keesing took the joke well, read it to the class, and let her talk after that.",
+    points: [["Punishment essays for talking", 1], ["The humorous poem", 1], ["Keesing's reaction", 1]] },
+  { ch: "ff-sermon", marks: 3, q: "What lesson did the Buddha teach Kisa Gotami? (40–50 words)",
+    a: "The Buddha asked her to bring mustard seed from a house where no one had died. She could not find such a house. She realised that death is common to all, and that grieving only brings more pain. The wise, who accept this, find peace.",
+    points: [["Mustard seed task", 1], ["Death is universal", 1], ["Acceptance brings peace", 1]] },
+  { ch: "ff-flying", marks: 3, q: "How did the young seagull finally learn to fly? (40–50 words)",
+    a: "Hungry and alone on the ledge, the seagull saw his mother flying towards him with a piece of fish. He dived at the fish with a cry. At first he fell, but then his wings spread out and he began to fly.",
+    points: [["Hunger", 1], ["Mother tempts with fish", 1], ["Dives and flies", 1]] },
+  { ch: "ff-poems", marks: 3, q: "How did the dust of snow change the poet's mood? (40–50 words)",
+    a: "The poet was sad and felt the day was wasted. A crow on a hemlock tree shook down dust of snow on him. This small act of nature lifted his mood, and he felt part of the day was saved.",
+    points: [["Poet's sad mood", 1], ["Crow shakes snow", 1], ["Mood changes", 1]] },
+  { ch: "fp-footprints", marks: 6, q: "Griffin was a brilliant scientist but a lawless person. Discuss. (100–120 words)",
+    a: "Griffin discovered how to make the human body invisible by swallowing rare drugs. This shows a brilliant mind. But he used his discovery only for selfish, criminal ends. He set fire to his landlord's house in London to take revenge. He stole clothes from a big store and robbed a shopkeeper. In the village of Iping he stole money from the clergyman's house and attacked people who tried to catch him. He never thought of using his invention for the good of others. The story shows that intelligence without ethics is dangerous, and that science must be guided by a sense of right and wrong.",
+    points: [["His discovery (brilliance)", 1], ["London fire", 1], ["Thefts in the store and Iping", 1], ["Violence when caught", 1], ["Moral about ethics", 1], ["Expression and word limit", 1]] },
+  { ch: "fp-bholi", marks: 6, q: "How did education change Bholi? (100–120 words)",
+    a: "As a child, Bholi was slow and had a pockmarked face. She stammered, and everyone ignored or teased her. Her parents sent her to school only because she was considered unfit for marriage.\nHer teacher was kind. She encouraged Bholi to speak without fear and promised that learning would make her respected. Bholi gained confidence.\nWhen the old, lame Bishamber demanded a dowry of five thousand rupees at the wedding, Bholi refused to marry such a greedy and mean man. She spoke clearly and firmly, and decided to look after her parents and teach in the school.\nEducation turned a timid girl into a confident, self-respecting woman.",
+    points: [["Bholi before school", 1], ["Teacher's role", 1], ["Growing confidence", 1], ["Refuses Bishamber", 1], ["Conclusion", 1], ["Expression and word limit", 1]] },
+  { ch: "ff-proposal", marks: 6, q: "Write a character sketch of Lomov. (100–120 words)",
+    a: "Ivan Vassilevitch Lomov is a wealthy landowner of 35, the neighbour of Chubukov. He is nervous and suffers from palpitations, numbness and sleeplessness, so he is a hypochondriac. He comes to propose to Natalya, not out of love but because he wants a quiet, regular life.\nHe is quarrelsome and proud. Instead of proposing, he argues fiercely with Natalya about the Oxen Meadows and later about whose dog, Guess or Squeezer, is better. During each quarrel his health 'fails' and he nearly faints.\nThrough Lomov, Chekhov makes fun of the rich who marry for property and comfort rather than love.",
+    points: [["Background", 1], ["Hypochondriac", 1], ["Reason for marriage", 1], ["Quarrelsome, proud", 1], ["Satire point", 1], ["Expression and word limit", 1]] }
+]);
+
+addTo("sanskrit", "written", [
+  { ch: "s-samas", marks: 4, q: "समस्तपदानां विग्रहं समासनाम च लिखत: (i) उपगङ्गम् (ii) असत्यम् (iii) रामलक्ष्मणौ (iv) कुम्भकारः",
+    a: "(i) गङ्गायाः समीपम् (अव्ययीभावः)\n(ii) न सत्यम् (नञ्-तत्पुरुषः)\n(iii) रामः च लक्ष्मणः च (द्वन्द्वः)\n(iv) कुम्भं करोति इति (उपपद-तत्पुरुषः)",
+    points: [["(i)", 1], ["(ii)", 1], ["(iii)", 1], ["(iv)", 1]] },
+  { ch: "s-pratyay", marks: 4, q: "प्रकृति-प्रत्ययौ संयोज्य विभज्य वा लिखत: (i) बल + मतुप् (ii) लघुता (iii) अज + टाप् (iv) पठ् + अनीयर्",
+    a: "(i) बलवान्\n(ii) लघु + तल्\n(iii) अजा\n(iv) पठनीयम्",
+    points: [["(i)", 1], ["(ii)", 1], ["(iii)", 1], ["(iv)", 1]] },
+  { ch: "m-tyag", marks: 4, q: "मञ्जूषायाः सहायतया कथां पूरयत (मञ्जूषा: याचकरूपेण, चक्षुः, शक्रस्य, शिबीनाम्): बोधिसत्त्वः ___ राजा आसीत्। तस्य दानशीलतां परीक्षितुं शक्रः अन्ध-___ आगच्छत्। सः राज्ञः एकं ___ अयाचत। राजा प्रीत्या चक्षुर्द्वयम् अयच्छत्। ___ प्रभावेण एकं चक्षुः प्रतिष्ठितम् अभवत्।",
+    a: "शिबीनाम्, याचकरूपेण, चक्षुः, शक्रस्य",
+    points: [["शिबीनाम्", 1], ["याचकरूपेण", 1], ["चक्षुः", 1], ["शक्रस्य", 1]] },
+  { ch: "m-sadhu", marks: 3, q: "पूर्णवाक्येन उत्तरत: (i) प्रच्छन्नभाग्यः कुत्र अवसत्? (ii) दुष्टबुद्धिः कलशं कस्य गृहे अपातयत्? (iii) सर्पः कं दष्टवान्?",
+    a: "(i) प्रच्छन्नभाग्यः कर्मपुर-नगरे अवसत्।\n(ii) दुष्टबुद्धिः कलशं प्रच्छन्नभाग्यस्य गृहे अपातयत्।\n(iii) सर्पः दुष्टबुद्धिं दष्टवान्।",
+    points: [["(i)", 1], ["(ii)", 1], ["(iii)", 1]] },
+  { ch: "m-tirukkural", marks: 3, q: "पूर्णवाक्येन उत्तरत: (i) पिता विद्याधनं कस्मै यच्छति? (ii) प्राणेभ्योऽपि किं रक्षणीयम्? (iii) नरः केन गुणेन कथनस्य तत्त्वार्थं जानाति?",
+    a: "(i) पिता विद्याधनं पुत्राय यच्छति।\n(ii) प्राणेभ्योऽपि सदाचारः रक्षणीयः।\n(iii) नरः विवेकेन कथनस्य तत्त्वार्थं जानाति।",
+    points: [["(i)", 1], ["(ii)", 1], ["(iii)", 1]] },
+  { ch: "m-srishti", marks: 5, q: "नाट्यांशं पठित्वा प्रश्नान् उत्तरत (based on 'रमणीया हि सृष्टिः एषा'): (i) नीरक्षीरविवेकी कः? (1) (ii) पक्षिणां जननी का? (1) (iii) प्रकृतिः किम् उपदिशति? (पूर्णवाक्येन) (2) (iv) 'अलम् अतिविकत्थनेन' इत्यस्य अर्थः हिन्द्याम् आङ्ग्ले वा। (1)",
+    a: "(i) हंसः\n(ii) प्रकृतिः\n(iii) प्रकृतिः उपदिशति यत् आनन्देन जीवनं यापनीयं, न तु कलहेन।\n(iv) Enough of excessive boasting. (बहुत डींग मारना बंद करो।)",
+    points: [["(i)", 1], ["(ii)", 1], ["(iii)", 2], ["(iv)", 1]] },
+  { ch: "s-writing", marks: 5, q: "मञ्जूषायाः सहायतया मित्रं प्रति पत्रं पूरयत (मञ्जूषा: परीक्षा, स्वास्थ्यम्, अभ्यासं, मित्रम्, अहम्): प्रिय ___, सप्रेम नमस्ते। ___ अत्र कुशली। मम वार्षिकी ___ आगामिमासे भविष्यति। अहं प्रतिदिनं गणितस्य ___ करोमि। तव ___ कथम् अस्ति? पत्रोत्तरं शीघ्रं देहि।",
+    a: "मित्रम् / मित्र, अहम्, परीक्षा, अभ्यासं, स्वास्थ्यम्",
+    points: [["मित्र", 1], ["अहम्", 1], ["परीक्षा", 1], ["अभ्यासं", 1], ["स्वास्थ्यम्", 1]] }
+]);
