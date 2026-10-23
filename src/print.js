@@ -65,7 +65,8 @@ function answerBlock(n, q, ans, pts, tip) {
     ${pts && pts.length ? `<table class="pts"><tbody>${pts.map(([p, m]) => `<tr><td>${esc(p)}</td><td>${esc(m)}</td></tr>`).join("")}</tbody></table>` : ""}
     ${tip ? `<div class="tipl">Scoring tip: ${esc(tip)}</div>` : ""}` };
 }
-const mcqAnswerBlock = (n, q) => ({ html: `<div class="q"><span class="qn">${esc(n)}.</span><span class="qt"><b>(${"ABCD"[q.a]}) ${esc(q.o[q.a])}</b>${q.e ? " · " + esc(q.e) : ""}</span><span></span></div>` });
+const mcqAnswerBlock = (n, q) => ({ html: `<div class="q"><span class="qn">${esc(n)}.</span><span class="qt">${esc(q.q)}</span><span></span></div>
+  <div class="ans"><b>Answer: (${"ABCD"[q.a]}) ${esc(q.o[q.a])}</b>${q.e ? "\n" + esc(q.e) : ""}</div>` });
 
 /* ---------- a solved past paper ---------- */
 function paperBlocks(p, withAnswers) {
@@ -73,7 +74,7 @@ function paperBlocks(p, withAnswers) {
   const blocks = [headerBlock(`CBSE Class X · ${subj}`, `${p.year} · ${p.exam} · Set ${p.set}${withAnswers ? "\nAnswers and marking scheme" : p.note ? "\n" + p.note : ""}`, p.marks, p.mins)];
   if (withAnswers && p.advice) blocks.push(secBlock("How to score full marks in this paper"), { html: `<div class="qt">${esc(p.advice)}</div>` });
   for (const s of p.sections) {
-    const items = withAnswers ? s.qs.filter(it => it.text === undefined) : s.qs;
+    const items = s.qs;
     if (!items.length) continue;
     blocks.push(secBlock(s.name, withAnswers ? "" : s.info));
     for (const it of items) {
