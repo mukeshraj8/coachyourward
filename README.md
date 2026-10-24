@@ -4,6 +4,8 @@ CBSE Class 10 board exam preparation (2026–27 syllabus): study plan, chapter n
 
 Served at https://study.rekhank.app from GitHub Pages. `index.html` is a single-file build; sign-in and progress sync use Firebase (Google accounts, Firestore).
 
+Releases (website, Android APK, Google Play): see [RELEASE.md](RELEASE.md).
+
 ## Updating the site
 
 All source lives in `src/`. Edit there, then run `sh scripts/build.sh` and commit both `src/` and the rebuilt `index.html`; GitHub Pages serves `index.html` from `main`.
