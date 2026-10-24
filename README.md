@@ -6,6 +6,8 @@ Served at https://study.rekhank.app from GitHub Pages. `index.html` is a single-
 
 Releases (website, Android APK, Google Play): see [RELEASE.md](RELEASE.md).
 
+Documentation: [architecture](docs/ARCHITECTURE.md), [project status](docs/STATUS.md) and the [roadmap to a full coaching platform](docs/ROADMAP.md).
+
 ## Updating the site
 
 All source lives in `src/`. Edit there, then run `sh scripts/build.sh` and commit both `src/` and the rebuilt `index.html`; GitHub Pages serves `index.html` from `main`.
