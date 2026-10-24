@@ -6,18 +6,19 @@ plugins {
 
 android {
     namespace "app.rekhank.study"
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "app.rekhank.study"
         minSdk 21
-        targetSdk 35
-        versionCode 1
-        versionName "1.0"
+        targetSdk 36
+        // Each CI build gets a higher version code, as the Play Store requires.
+        versionCode((System.getenv("GITHUB_RUN_NUMBER") ?: "1") as int)
+        versionName "1.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "1")
     }
 
     // The signing key lives in the repository so every build can update the installed app.
-    // For a Play Store release, Google Play App Signing holds the real key.
+    // For the Play Store it is only the upload key: Google Play App Signing holds the key users' devices see.
     signingConfigs {
         release {
             storeFile file("../coachyourward.keystore")

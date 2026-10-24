@@ -1,5 +1,5 @@
 # Builds the Android app (a Trusted Web Activity for https://study.rekhank.app) and publishes the APK
-# as the "android" release, so the latest build is always at releases/latest/download/CoachYourWard.apk.
+# (and the .aab bundle for the Play Store) as a release, so the latest build is always at releases/latest/download/CoachYourWard.apk.
 name: Android app
 
 on:
@@ -22,21 +22,27 @@ jobs:
           java-version: "17"
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.9"
-      - name: Build signed APK
+          gradle-version: "8.13"
+      - name: Build signed APK and Play Store bundle
         working-directory: android
-        run: gradle --no-daemon assembleRelease
-      - name: Rename APK
-        run: cp android/app/build/outputs/apk/release/app-release.apk CoachYourWard.apk
+        run: gradle --no-daemon assembleRelease bundleRelease
+      - name: Rename outputs
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk CoachYourWard.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab CoachYourWard.aab
       - uses: actions/upload-artifact@v4
         with:
-          name: CoachYourWard-apk
-          path: CoachYourWard.apk
+          name: CoachYourWard-android
+          path: |
+            CoachYourWard.apk
+            CoachYourWard.aab
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: android-v${{ github.run_number }}
           name: CoachYourWard for Android (build ${{ github.run_number }})
           body: Install CoachYourWard.apk on an Android phone. It opens study.rekhank.app full screen; sign-in and progress sync work as on the website.
-          files: CoachYourWard.apk
+          files: |
+            CoachYourWard.apk
+            CoachYourWard.aab
           make_latest: true
