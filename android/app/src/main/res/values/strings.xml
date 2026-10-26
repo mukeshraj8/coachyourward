@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">CoachYourWard</string>
     <string name="asset_statements">[{\"relation\": [\"delegate_permission/common.handle_all_urls\"], \"target\": {\"namespace\": \"web\", \"site\": \"https://study.rekhank.app\"}}]</string>
+    <string name="reminder_channel">Daily study reminder</string>
+    <string name="reminder_title">Today\'s plan is ready</string>
+    <string name="reminder_text">Your revisions and plan tasks for today are waiting. Even 20 minutes keeps the streak going.</string>
 </resources>
