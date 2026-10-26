@@ -60,8 +60,8 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 | Upload to Play internal testing | Done | Package `app.rekhank.study`, build 4 (minimum Android 7.0) |
 | Play app signing fingerprint in `.well-known/assetlinks.json` | Done | Lets the Play version open full screen |
 | Play store listing, store settings, App content forms, content rating | Done | Saved in Play Console (account Rekhank); contact rekhank.admin@gmail.com |
-| Closed test with 12 testers for 14 days, then apply for production | Mukesh | Required: the developer account is personal. Needs 12+ tester emails; the Rekhank tester list can be reused |
-| Confirm the GitHub APK opens full screen | Mukesh | Not yet confirmed on a phone |
+| Closed test, then apply for production | Mukesh | Sent for review 26 Oct 2026 (India, RekhankClosedTesters, 29 testers). After approval, testers keep it 14 days, then apply for production |
+| Phone test: GitHub APK and Play internal-test build | Done | Both open full screen on a Realme (Android 10); sign-in, sync and a timed test work |
 | Update the exam date when CBSE publishes the date sheet | Student / parent | Dashboard → First paper |
 | Optional: a private Play upload key | Claude | The current key is in the public repo; Google holds the real signing key |
 
