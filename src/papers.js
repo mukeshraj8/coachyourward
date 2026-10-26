@@ -41,7 +41,8 @@ const PAPER_LINKS = {
     [2025, "Supplementary (Jul)", "question-paper/2025-COMPTT/X/Sanskrit_Communicative.zip", "marking-scheme/2025-COMPTT/X/SANSKRIT_COMMUNICATIVE.zip"]
   ]
 };
-const cbseUrl = p => "https://www.cbse.gov.in/cbsenew/" + p.replace(/ /g, "%20").replace(/&/g, "%26");
+/* A paper's qp and ms are paths on cbse.gov.in, or full links (the sample papers sit on cbseacademic.nic.in). */
+const cbseUrl = p => /^https?:\/\//.test(p) ? p : "https://www.cbse.gov.in/cbsenew/" + p.replace(/ /g, "%20").replace(/&/g, "%26");
 
 (function () {
   const css = `
