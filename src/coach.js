@@ -13,8 +13,9 @@ let reviseTab = "due";
 .coach-item:first-of-type { border-top: 0; }
 .coach-item .what { flex: 1; min-width: 0; }
 .coach-item .mins { font-family: var(--mono); font-size: .8rem; color: var(--muted); flex: none; }
+.coach-item .what .mins { display: block; margin-top: 2px; }
 .coach-item.done .what { color: var(--muted); text-decoration: line-through; }
-.coach-item .tick { width: 20px; flex: none; color: var(--good); font-weight: 700; text-align: center; }
+.coach-item .tick { width: 14px; flex: none; color: var(--good); font-weight: 700; text-align: center; }
 .exam-banner { border-color: var(--hot); box-shadow: 0 0 0 1px var(--hot); }
 .sheet h3 { margin-top: 6px; }
 .sheet .formula { font-size: .92rem; }
@@ -234,7 +235,7 @@ function coachItems(week, started, pending) {
 function coachItemRow(it) {
   if (it.task) return `<div class="coach-item">${taskRow(it.task, it.task.subj, true).replace('class="task', 'style="flex:1;min-width:0" class="task')}<span class="mins">${it.mins} min</span></div>`;
   const a = it.act, attrs = a ? Object.entries(a).map(([k, v]) => k === "act" ? `data-act="${v}"` : `data-${k}="${esc(v)}"`).join(" ") : "";
-  return `<div class="coach-item ${it.done ? "done" : ""}"><span class="tick">${it.done ? "✓" : "·"}</span><span class="what">${esc(it.text)}</span>${it.mins ? `<span class="mins">${it.mins} min</span>` : ""}${a && !it.done ? `<button class="btn small ghost" ${attrs}>Start</button>` : ""}</div>`;
+  return `<div class="coach-item ${it.done ? "done" : ""}"><span class="tick">${it.done ? "✓" : "·"}</span><span class="what">${esc(it.text)}${it.mins ? `<span class="mins">${it.mins} min</span>` : ""}</span>${a && !it.done ? `<button class="btn small ghost" ${attrs}>Start</button>` : ""}</div>`;
 }
 
 todayCard = function (week, started, pending) {
@@ -278,8 +279,8 @@ function dateSheetCard() {
   return `<div class="card stack">
     <span class="label">Board exam date sheet</span>
     <p class="muted" style="font-size:.9rem">Enter each paper's date when CBSE publishes the date sheet (usually in December). Exam mode switches on ${EXAM_MODE_DAYS} days before the first paper, and the Dashboard then plans each day for the next paper.</p>
-    <div>${SUBJ_KEYS.map(k => `<div class="ds-row"><span class="subj-h ${k}">${SUBJECTS[k].short}</span><span class="row" style="gap:8px">${S.dateSheet[k] ? "" : `<span class="muted" style="font-size:.85rem">Not set</span>`}<input type="date" data-act="ds" data-subj="${k}" value="${esc(S.dateSheet[k] || "")}" aria-label="${SUBJECTS[k].short} paper date"></span></div>`).join("")}</div>
-    <label class="row muted" style="font-size:.9rem;gap:8px"><input type="checkbox" data-act="exam-mode" ${store.get("examModeOn", false) ? "checked" : ""}> Turn exam mode on now (for school pre-boards)</label>
+    <div>${SUBJ_KEYS.map(k => `<div class="ds-row"><span class="subj-h ${k}">${SUBJECTS[k].short}</span><span><input type="date" data-act="ds" data-subj="${k}" value="${esc(S.dateSheet[k] || "")}" aria-label="${SUBJECTS[k].short} paper date"></span></div>`).join("")}</div>
+    <label class="muted" style="font-size:.9rem;display:flex;gap:8px;align-items:flex-start"><input type="checkbox" data-act="exam-mode" style="flex:none;margin-top:3px" ${store.get("examModeOn", false) ? "checked" : ""}><span>Turn exam mode on now (for school pre-boards)</span></label>
   </div>`;
 }
 
