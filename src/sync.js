@@ -1,8 +1,8 @@
-/* Progress sync: the study plan, test history, exam date and mistake book are kept in one document per person, so progress
+/* Progress sync: the study plan, test history, exam date, mistake book, revision schedule and date sheet are kept in one document per person, so progress
    follows them to every device. Two back ends plug in through startSync(): the claude.ai store (db + user
    capabilities, below) and Firebase on the own website (fbsync.js). Without either, progress stays in this
    device's localStorage. Loads after app.js. */
-const SYNC_KEYS = ["plan", "history", "examDate", "mistakes"];
+const SYNC_KEYS = ["plan", "history", "examDate", "mistakes", "revise", "dateSheet"];
 const sync = { backend: null, busy: false, again: false, timer: null, seen: store.get("syncedAt", 0), first: true, unsub: null };
 const baseStoreSet = store.set;
 const SYNC_OFF = "Progress is saved on this device.";
@@ -26,7 +26,7 @@ async function pushProgress() {
   sync.busy = true;
   const at = store.get("updatedAt", 0) || Date.now();
   try {
-    await sync.backend.set(JSON.parse(JSON.stringify({ plan: S.plan, history: S.history, examDate: S.examDate, mistakes: S.mistakes || {}, updatedAt: at })));
+    await sync.backend.set(JSON.parse(JSON.stringify({ plan: S.plan, history: S.history, examDate: S.examDate, mistakes: S.mistakes || {}, revise: S.revise || {}, dateSheet: S.dateSheet || {}, updatedAt: at })));
     sync.seen = at; baseStoreSet.call(store, "syncedAt", at);
     syncNote(syncOnNote);
   } catch (e) {
@@ -47,6 +47,8 @@ function applyRemote(d) {
   S.history = [...(d.history || []), ...extra].sort((a, b) => a.id - b.id);
   if (d.examDate) S.examDate = d.examDate;
   if (d.mistakes) { S.mistakes = d.mistakes; baseStoreSet.call(store, "mistakes", S.mistakes); }
+  if (d.revise) { S.revise = d.revise; baseStoreSet.call(store, "revise", S.revise); }
+  if (d.dateSheet) { S.dateSheet = d.dateSheet; baseStoreSet.call(store, "dateSheet", S.dateSheet); }
   baseStoreSet.call(store, "plan", S.plan); baseStoreSet.call(store, "history", S.history); baseStoreSet.call(store, "examDate", S.examDate);
   sync.seen = d.updatedAt; baseStoreSet.call(store, "syncedAt", d.updatedAt);
   baseStoreSet.call(store, "updatedAt", extra.length ? Date.now() : d.updatedAt);

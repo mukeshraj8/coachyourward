@@ -5,7 +5,7 @@ const store = {
   set(k, v) { try { localStorage.setItem("cyw." + k, JSON.stringify(v)); } catch (e) {} }
 };
 
-const PAGES = ["home", "plan", "topics", "papers", "hot", "tests", "progress", "jee"];
+const PAGES = ["home", "plan", "topics", "papers", "hot", "tests", "revise", "progress", "jee"];
 const SUBJ_KEYS = ["maths", "science", "english", "sanskrit", "social"];
 const PLAN_START = "2026-10-26";
 const DAY = 864e5;
@@ -133,7 +133,8 @@ function pageHome() {
   const weak = weakChapters();
   const all = planStats();
   return `
-  <div class="head"><div><h1>Dashboard</h1><p>One look tells him what to do today. The plan, tests and progress all feed this page.</p></div></div>
+  <div class="head"><div><h1>Dashboard</h1><p>Today's plan, the countdown and progress at a glance. The plan, tests and revision all feed this page.</p></div></div>
+  ${todayCard(week, started, pending)}
   <div class="grid g3">
     <div class="card stack">
       <span class="label">Board exam</span>
@@ -153,11 +154,6 @@ function pageHome() {
       <button class="btn" data-act="go" data-page="tests">Start a test</button>
     </div>
   </div>
-  <div class="card stack today">
-    <div class="row spread"><h2>${started ? "This week" : "Week 1 starts Monday, 26 Oct"}: ${esc(week.phase)}</h2><span class="tag">Week ${week.n} · ${fmtDate(week.start)} to ${fmtDate(week.end)}</span></div>
-    ${pending.length ? `<div class="stack" style="gap:2px">${pending.map(t => taskRow(t, t.subj, true)).join("")}</div>` : `<p class="muted">Everything for this week is ticked off. Use the Hot Section for extra practice.</p>`}
-    <div><button class="btn ghost" data-act="go" data-page="plan">Open the full plan</button></div>
-  </div>
   <div class="grid g2">
     <div class="card stack">
       <h3>Recent tests</h3>
@@ -167,6 +163,15 @@ function pageHome() {
       <h3>Weakest chapters</h3>
       ${weak.length ? weak.map(w => `<div class="stack" style="gap:4px"><div class="row spread"><span>${SUBJECTS[w.subj].short}: ${esc(chName(w.subj, w.ch))}</span><span class="num">${w.p}%</span></div>${bar(w.p, barClass(w.p))}</div>`).join("") : `<p class="muted">After a few tests, the chapters with the lowest accuracy show up here so revision goes where marks are being lost.</p>`}
     </div>
+  </div>`;
+}
+
+// The "what to do now" card; coach.js replaces it with the daily coach plan.
+function todayCard(week, started, pending) {
+  return `<div class="card stack today">
+    <div class="row spread"><h2>${started ? "This week" : "Week 1 starts Monday, 26 Oct"}: ${esc(week.phase)}</h2><span class="tag">Week ${week.n} · ${fmtDate(week.start)} to ${fmtDate(week.end)}</span></div>
+    ${pending.length ? `<div class="stack" style="gap:2px">${pending.map(t => taskRow(t, t.subj, true)).join("")}</div>` : `<p class="muted">Everything for this week is ticked off. Use the Hot Section for extra practice.</p>`}
+    <div><button class="btn ghost" data-act="go" data-page="plan">Open the full plan</button></div>
   </div>`;
 }
 
@@ -414,8 +419,10 @@ function pageJee() {
 }
 
 /* ---------- render & events ---------- */
+const EXTRA_PAGES = {};
 function render() {
-  const fn = { home: pageHome, plan: pagePlan, topics: pageTopics, papers: pagePapers, hot: pageHot, tests: pageTests, progress: pageProgress, jee: pageJee }[S.page];
+  // Pages added by later scripts (coach.js) register in EXTRA_PAGES.
+  const fn = { home: pageHome, plan: pagePlan, topics: pageTopics, papers: pagePapers, hot: pageHot, tests: pageTests, progress: pageProgress, jee: pageJee, ...EXTRA_PAGES }[S.page] || pageHome;
   view.innerHTML = fn();
   document.querySelectorAll("#nav button").forEach(b => b.setAttribute("aria-current", b.dataset.page === S.page ? "page" : "false"));
   clearInterval(timerId);
@@ -455,7 +462,7 @@ view.addEventListener("change", e => {
   const el = e.target;
   if (el.id === "examDate" && el.value) { S.examDate = el.value; store.set("examDate", el.value); render(); return; }
   const a = el.dataset.act;
-  if (a === "task") { if (el.checked) S.plan[el.dataset.id] = true; else delete S.plan[el.dataset.id]; store.set("plan", S.plan); render(); }
+  if (a === "task") { if (el.checked) S.plan[el.dataset.id] = Date.now(); else delete S.plan[el.dataset.id]; store.set("plan", S.plan); render(); }
   else if (a === "ans") { S.test.ans[+el.dataset.i] = +el.value; const n = document.getElementById("answered"); if (n) n.textContent = Object.keys(S.test.ans).length; }
   else if (a === "self") { S.result.self[el.dataset.k] = el.checked; }
 });
