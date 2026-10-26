@@ -25,7 +25,14 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 
 ### Features
 
-- Dashboard: countdown to the exam, plan progress, tests taken, this week's tasks, weakest chapters, daily streak.
+- Dashboard: today's plan (the day's share of plan tasks, due revisions, mistakes to fix, a weekend full mock), countdown to the exam, plan progress, tests taken, weakest chapters, daily streak.
+- Revision page:
+  - spaced revision: a short quiz 1, 3, 7 and 21 days after each chapter is learnt or tested
+  - quick-revision sheets per subject (formulas or key terms, points, common mistakes), printable
+  - board date sheet; exam mode in the last 14 days plans each day for the next paper
+- Weekly report for parents on the Progress page, shared by WhatsApp, email or the share sheet.
+- Figures drawn for 75 past-paper questions (geometry, graphs, circuits, ray diagrams).
+- Android: a daily 6 pm study reminder.
 - 16-week study plan with tasks per subject and progress tracking.
 - Topic notes for every chapter: gist, key points, formulas, solved example, common mistake, exam tip.
 - Timed tests in the CBSE pattern:
@@ -62,15 +69,18 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 | Play store listing, store settings, App content forms, content rating | Done | Saved in Play Console (account Rekhank); contact rekhank.admin@gmail.com |
 | Closed test, then apply for production | Mukesh | Sent for review 26 Oct 2026 (India, RekhankClosedTesters, 29 testers). After approval, testers keep it 14 days, then apply for production |
 | Phone test: GitHub APK and Play internal-test build | Done | Both open full screen on a Realme (Android 10); sign-in, sync and a timed test work |
-| Update the exam date when CBSE publishes the date sheet | Student / parent | Dashboard → First paper |
+| Update the exam date when CBSE publishes the date sheet | Student / parent | Revision → Date sheet (the first paper's date also sets the Dashboard countdown) |
+| Add the official CBSE 2026–27 sample papers and marking schemes | Claude | Released 21 Sep 2026 at cbseacademic.nic.in; needs that site allowed in the cloud environment's network settings |
+| AI checking of written answers and ask-a-doubt | Mukesh, then Claude | Needs a decision on Claude API cost and the Firebase Blaze plan |
+| New Play build with the daily reminder | Claude | Build 5 is on GitHub Releases; upload its `.aab` to Play testing |
 | Optional: a private Play upload key | Claude | The current key is in the public repo; Google holds the real signing key |
 
 ## Known limitations
 
-- **Diagrams:** questions that need a figure describe it in words, for example "[Figure: …]". There are no drawn diagrams yet.
+- **Diagrams:** 75 past-paper questions have drawn figures. Questions that ask the student to draw (ray diagrams, labelled biology diagrams) don't show a model drawing yet.
 - **Written answers:** marked by the student against the marking points, not checked automatically.
 - **Scope:** one student per Google account. There is no parent or teacher view.
-- **Reminders:** no notifications.
+- **Reminders:** a fixed daily 6 pm notification on Android only; the time can't be changed in the app, and there are no website notifications.
 - **Single build:** the question data ships in one 1.6 MB page. This is fine today but will need splitting as content grows.
 - **Automated checks:** the validation and browser tests run outside the repository and aren't yet part of CI.
 - **Syllabus scope:** a few Social Science chapters were flagged as possibly periodic-test only in recent years. Questions on them were kept because the 2026 board paper used them. This should be rechecked against the official 2026–27 syllabus when CBSE publishes the sample paper.

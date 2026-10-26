@@ -23,6 +23,8 @@ Each item builds on what exists: tests, chapter accuracy, the mistake book and t
 
 **Order of work:** 1, 2, 10 and 7 first (no server needed), then 9 with 3 and 4, then 5 and 6.
 
+**Done (26 Oct 2026):** 1 (today's plan), 2 (spaced revision), 5 (weekly report shared from the Progress page; automatic email would need item 9), 6 (a daily 6 pm reminder on Android, set in the app itself, no server), 8 (75 figures in past papers) and 10 (exam-week mode). For 7, a weekly full mock from the solved papers is done; the official 2026–27 sample papers are still to be added. 3, 4 and 9 wait on the decision about API cost.
+
 **Approximate running cost** for one student using AI checking and doubts daily: a few hundred rupees a month in Claude API usage. Firebase stays on the free tier.
 
 ## Stage 2: a coaching platform for many students (2027)
