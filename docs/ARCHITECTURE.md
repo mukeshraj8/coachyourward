@@ -151,7 +151,7 @@ service cloud.firestore {
 
 ## 8. Android app
 
-`android/` is a Gradle project (Android Gradle Plugin 8.11.1, Gradle 8.13, compile and target SDK 36, minimum SDK 21) using Google's `androidbrowserhelper` 2.5.0.
+`android/` is a Gradle project (Android Gradle Plugin 8.11.1, Gradle 8.13, compile and target SDK 36, minimum SDK 24 (Android 7.0, required by Play automatic protection)) using Google's `androidbrowserhelper` 2.5.0.
 
 - **How it opens:** `LauncherActivity` opens `https://study.rekhank.app/` in Chrome as a Trusted Web Activity, so sign-in, offline mode and sync behave exactly like the website.
 - **Full screen:** works only when `.well-known/assetlinks.json` lists the app's signing certificate. If it doesn't match, the app shows an address bar.

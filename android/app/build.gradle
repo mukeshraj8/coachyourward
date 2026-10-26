@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "app.rekhank.study"
-        minSdk 21
+        minSdk 24
         targetSdk 36
         // Each CI build gets a higher version code, as the Play Store requires.
         versionCode((System.getenv("GITHUB_RUN_NUMBER") ?: "1") as int)
