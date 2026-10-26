@@ -3,6 +3,9 @@
   "target": {
     "namespace": "android_app",
     "package_name": "app.rekhank.study",
-    "sha256_cert_fingerprints": ["19:40:80:87:61:4B:59:26:D1:83:AC:21:2D:3D:17:AC:42:55:B9:E0:2A:06:A4:E1:A7:AE:DA:15:BC:7E:4D:AD"]
+    "sha256_cert_fingerprints": [
+      "19:40:80:87:61:4B:59:26:D1:83:AC:21:2D:3D:17:AC:42:55:B9:E0:2A:06:A4:E1:A7:AE:DA:15:BC:7E:4D:AD",
+      "E5:CC:11:49:27:1F:F1:FB:40:36:70:7D:BD:14:15:FE:90:46:17:0C:6A:FA:35:8D:03:87:42:E6:62:A6:09:CF"
+    ]
   }
 }]

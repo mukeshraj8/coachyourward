@@ -57,9 +57,9 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 
 | Item | Owner | Notes |
 | --- | --- | --- |
-| Create the Play Store app and upload `release\CoachYourWard.aab` | Mukesh | Steps in [RELEASE.md](../RELEASE.md) |
-| Add Play's app signing SHA-256 fingerprint to `.well-known/assetlinks.json` | Claude, after the upload | Without it, the Play version shows an address bar |
-| Closed test with 12 testers for 14 days | Mukesh | Only if the developer account is personal and newer than November 2023 |
+| Upload to Play internal testing | Done | Package `app.rekhank.study`, build 4 (minimum Android 7.0) |
+| Play app signing fingerprint in `.well-known/assetlinks.json` | Done | Lets the Play version open full screen |
+| Closed test with 12 testers for 14 days | Mukesh | Required: the developer account is personal. The Rekhank tester list can be reused |
 | Confirm the GitHub APK opens full screen | Mukesh | Not yet confirmed on a phone |
 | Update the exam date when CBSE publishes the date sheet | Student / parent | Dashboard → First paper |
 | Optional: a private Play upload key | Claude | The current key is in the public repo; Google holds the real signing key |
