@@ -84,3 +84,8 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 - **Single build:** the question data ships in one 1.6 MB page. This is fine today but will need splitting as content grows.
 - **Automated checks:** the validation and browser tests run outside the repository and aren't yet part of CI.
 - **Syllabus scope:** a few Social Science chapters were flagged as possibly periodic-test only in recent years. Questions on them were kept because the 2026 board paper used them. This should be rechecked against the official 2026–27 syllabus when CBSE publishes the sample paper.
+
+## AI checking and Ask a doubt (26 Oct 2026)
+Built: "Ask a doubt" page (text or photo) and "Check with AI" on every written answer after a test (typed answer or photo; the AI marks against the marking points and pre-ticks them).
+Server: `functions/index.js` with Claude, ChatGPT and Grok in a preference order with automatic fallback, an email allow-list and a daily cap.
+Not live until the steps in `docs/AI-SETUP.md` are done (Blaze plan, keys, deploy).

@@ -372,7 +372,7 @@ function resultView() {
     ${r.written.map((q, i) => `<div class="card q-card"><div class="row spread"><span class="qnum">W${i + 1}</span><span class="tag marks">${q.marks} marks</span></div><p class="q">${esc(q.q)}</p>${typeof figHtml === "function" ? figHtml(q) : ""}
       ${r.txt[i] ? `<div><span class="label">Your answer</span><div class="solution">${esc(r.txt[i])}</div></div>` : ""}
       <div><span class="label">Model answer</span><div class="solution">${esc(q.a)}</div></div>
-      <div class="stack" style="gap:4px">${q.points.map(([p, m], j) => `<label class="task"><input type="checkbox" data-act="self" data-k="${i}-${j}" ${r.self[i + "-" + j] ? "checked" : ""}><span>${esc(p)}</span><span class="num go">${m}</span></label>`).join("")}</div></div>`).join("")}
+      <div class="stack" style="gap:4px">${q.points.map(([p, m], j) => `<label class="task"><input type="checkbox" data-act="self" data-k="${i}-${j}" ${r.self[i + "-" + j] ? "checked" : ""}><span>${esc(p)}</span><span class="num go">${m}</span></label>`).join("")}</div>${typeof aiCheckBlock === "function" ? aiCheckBlock(r, i) : ""}</div>`).join("")}
     <div><button class="btn primary" data-act="save-result">Save final score</button></div>` : ""}
   ${r.saved ? `<div class="row"><span class="tag good">Saved to Progress</span><button class="btn" data-act="retake">Take another ${esc(SUBJECTS[r.subj].short)} test</button><button class="btn ghost" data-act="go" data-page="progress">See progress</button></div>` : ""}
   ${r.mcq.length ? `<h2>Review: MCQs (${r.right}/${r.mcq.length}, ${mcqP}%)</h2>` : ""}

@@ -41,7 +41,7 @@ There is no bundler and no framework: plain JavaScript files concatenated into o
 6. `jee.js`: JEE Foundation
 7. `print.js`: PDF downloads
 8. `sync.js`: progress sync core
-9. `firebase-config.js`, `fbsync.js`: Google sign-in and Firestore (website only)
+9. `firebase-config.js`, `fbsync.js`, `ai.js`: Google sign-in, Firestore and AI help (website only)
 10. `pwa.js`: service worker registration and Android download card (website only)
 
 Order matters: later scripts extend earlier ones by wrapping global functions (section 4). The built page is about 1.6 MB, nearly all of it question data.
@@ -69,6 +69,7 @@ The claude.ai artifact is built from the same files (the project's `build.sh` in
 | `sync.js` | Sync engine with pluggable back ends; the claude.ai back end |
 | `firebase-config.js` | Public Firebase web config (identifiers, not secrets) |
 | `fbsync.js` | Google sign-in (Firebase Auth compat SDK 10.12.2) and the Firestore back end |
+| `ai.js` | Ask a doubt page and "Check with AI" on written answers; calls the `ai` Firebase function (`functions/index.js`, setup in `docs/AI-SETUP.md`) |
 | `pwa.js` | Registers `/sw.js`; shows "Download the app" on Android browsers |
 
 ## 4. Runtime design
