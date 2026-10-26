@@ -9,10 +9,15 @@
      Failed attempts are not counted. Every call is logged in aiLog with the provider that answered. */
 const { onRequest } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
-const admin = require("firebase-admin");
-
-admin.initializeApp();
-const db = admin.firestore();
+// firebase-admin loads on the first request, not at deploy time, to keep the deploy-time code scan fast.
+let db, auth, FieldValue;
+function initAdmin() {
+  if (db) return;
+  require("firebase-admin/app").initializeApp();
+  ({ FieldValue } = require("firebase-admin/firestore"));
+  db = require("firebase-admin/firestore").getFirestore();
+  auth = require("firebase-admin/auth").getAuth();
+}
 
 const KEYS = {
   anthropic: defineSecret("ANTHROPIC_API_KEY"),
@@ -155,12 +160,13 @@ exports.ai = onRequest({
   secrets: Object.values(KEYS)
 }, async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "Use POST." });
+  initAdmin();
   const started = Date.now();
   let uid = "", email = "";
   try {
     const m = /^Bearer (.+)$/.exec(req.get("authorization") || "");
     if (!m) throw httpError(401, "Sign in first.");
-    const tok = await admin.auth().verifyIdToken(m[1]).catch(() => { throw httpError(401, "Sign in again."); });
+    const tok = await auth.verifyIdToken(m[1]).catch(() => { throw httpError(401, "Sign in again."); });
     uid = tok.uid; email = String(tok.email || "").toLowerCase();
 
     const cfg = await loadConfig();
@@ -179,14 +185,14 @@ exports.ai = onRequest({
       try {
         const out = await PROVIDERS[p](key, model, r, ctl.signal);
         const result = r.task === "check" ? parseCheck(out.text, r.points) : { answer: out.text };
-        await usageRef.set({ count: admin.firestore.FieldValue.increment(1), uid, date: today() }, { merge: true });
-        await db.collection("aiLog").add({ uid, email, task: r.task, provider: p, model: out.model, ok: true, failed: tried, ms: Date.now() - started, usage: out.usage || null, at: admin.firestore.FieldValue.serverTimestamp() });
+        await usageRef.set({ count: FieldValue.increment(1), uid, date: today() }, { merge: true });
+        await db.collection("aiLog").add({ uid, email, task: r.task, provider: p, model: out.model, ok: true, failed: tried, ms: Date.now() - started, usage: out.usage || null, at: FieldValue.serverTimestamp() });
         return res.json({ ...result, provider: p, model: out.model, left: cfg.dailyLimit - used - 1 });
       } catch (e) {
         tried.push({ provider: p, model, error: e.name === "AbortError" ? "timed out" : String(e.message).slice(0, 300) });
       } finally { clearTimeout(timer); }
     }
-    await db.collection("aiLog").add({ uid, email, task: r.task, ok: false, failed: tried, ms: Date.now() - started, at: admin.firestore.FieldValue.serverTimestamp() });
+    await db.collection("aiLog").add({ uid, email, task: r.task, ok: false, failed: tried, ms: Date.now() - started, at: FieldValue.serverTimestamp() });
     throw httpError(503, tried.length ? "All the AI services failed just now. Please try again in a minute." : "No AI key is set up yet.");
   } catch (e) {
     res.status(e.status || 500).json({ error: e.status ? e.message : "Something went wrong. Please try again." });
