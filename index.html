@@ -157,6 +157,7 @@ details[open] > summary { margin-bottom: 8px; }
 .opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
 .qnum { font-family: var(--mono); color: var(--muted); font-size: .85rem; }
 textarea { width: 100%; min-height: 120px; font: inherit; padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+select { max-width: 100%; }
 select, input[type="date"] { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .score-big { font-family: var(--display); font-size: 3rem; font-weight: 700; line-height: 1; }
 .confirm { background: var(--hot-soft); border-radius: 8px; padding: 10px 14px; }
@@ -179,7 +180,8 @@ select, input[type="date"] { font: inherit; padding: 6px 10px; border-radius: 8p
 .hist td, .hist th { padding: 8px 10px; border-top: 1px solid var(--line); text-align: left; font-size: .92rem; }
 .hist th { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border-top: 0; }
 .hist { width: 100%; border-collapse: collapse; }
-.hist td.num { text-align: right; }
+.hist td.num { text-align: right; white-space: nowrap; }
+@media (max-width: 560px) { .hist.full th:nth-child(4), .hist.full td:nth-child(4) { display: none; } .hist td, .hist th { padding: 8px 6px; } }
 
 @media (max-width: 820px) {
   .app { grid-template-columns: 1fr; }
@@ -7008,7 +7010,7 @@ function pageProgress() {
     <div class="stack">${sub.chapters.map(c => { const a = acc[c.id]; const p = a ? pct(a[0], a[1]) : null;
       return `<div class="row" style="gap:12px"><span style="flex:1 1 200px;min-width:0">${esc(c.name)}</span><span style="flex:2 1 160px">${p === null ? `<span class="muted" style="font-size:.85rem">Not tested</span>` : bar(p, barClass(p))}</span><span class="num" style="width:7ch;text-align:right">${p === null ? "" : p + "%"}</span></div>`; }).join("")}</div></div>
   <div class="card stack"><h2>Test history</h2>
-    ${hist.length ? `<div class="table-wrap"><table class="hist"><thead><tr><th>Date</th><th>Subject</th><th>Test</th><th>Time</th><th style="text-align:right">Score</th></tr></thead><tbody>${hist.map(h => `<tr><td class="num">${fmtDate(h.date)}</td><td>${SUBJECTS[h.subj].short}</td><td>${esc(h.title)}</td><td class="num">${mmss(h.secs)}</td><td class="num">${h.score}/${h.max} (${pct(h.score, h.max)}%)</td></tr>`).join("")}</tbody></table></div>` : `<p class="muted">No tests yet.</p>`}
+    ${hist.length ? `<div class="table-wrap"><table class="hist full"><thead><tr><th>Date</th><th>Subject</th><th>Test</th><th>Time</th><th style="text-align:right">Score</th></tr></thead><tbody>${hist.map(h => `<tr><td class="num">${fmtDate(h.date)}</td><td>${SUBJECTS[h.subj].short}</td><td>${esc(h.title)}</td><td class="num">${mmss(h.secs)}</td><td class="num">${h.score}/${h.max} (${pct(h.score, h.max)}%)</td></tr>`).join("")}</tbody></table></div>` : `<p class="muted">No tests yet.</p>`}
   </div>
   <div class="row">${S.confirm === "reset" ? `<span class="confirm row">Erase all test history and plan ticks on this device? <button class="btn small" data-act="reset">Erase</button><button class="btn small" data-act="cancel">Cancel</button></span>` : `<button class="btn" data-act="ask-reset">Reset progress</button>`}</div>`;
 }
@@ -7032,6 +7034,9 @@ function render() {
   const fn = { home: pageHome, plan: pagePlan, topics: pageTopics, papers: pagePapers, hot: pageHot, tests: pageTests, progress: pageProgress, jee: pageJee, ...EXTRA_PAGES }[S.page] || pageHome;
   view.innerHTML = fn();
   document.querySelectorAll("#nav button").forEach(b => b.setAttribute("aria-current", b.dataset.page === S.page ? "page" : "false"));
+  // On phones the nav is a horizontal strip: keep the current page's tab in view.
+  const rail = document.querySelector(".rail"), cur = document.querySelector('#nav button[aria-current="page"]');
+  if (rail && cur && rail.scrollWidth > rail.clientWidth) rail.scrollLeft = cur.offsetLeft - (rail.clientWidth - cur.offsetWidth) / 2;
   clearInterval(timerId);
   if (S.test) timerId = setInterval(tick, 1000);
 }
@@ -7077,7 +7082,8 @@ view.addEventListener("input", e => { if (e.target.dataset.act === "txt" && S.te
 
 const fromHash = (location.hash || "").slice(1);
 if (PAGES.includes(fromHash)) S.page = fromHash;
-render();
+// First render once every script has loaded, so pages extended by later scripts (prep.js, coach.js, print.js) are complete.
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", render); else render();
 </script>
 <script>
 /* Smart practice: a mistake book, weak-chapter drills, fresh questions first, and a daily streak.
@@ -7272,7 +7278,22 @@ function finishRevision(subj, ch, ok) {
   else S.revise[k] = { s: cur.s + 1, due: addDays(todayIso(), REVISE_GAPS[cur.s + 1]) };
   saveRevise();
 }
+// Chapters tested or ticked as learnt before spaced revision existed join the schedule, a day after that test or tick.
+// Saved without marking progress as changed, so an older copy on this device never overrides newer progress in the account.
+function seedRevisions() {
+  let added = false;
+  const add = (subj, ch, when) => {
+    const k = revKey(subj, ch);
+    if (S.revise[k] || !SUBJECTS[subj] || !chapterOf(subj, ch)) return;
+    S.revise[k] = { s: 0, due: addDays(isoOf(new Date(when)), REVISE_GAPS[0]) }; added = true;
+  };
+  S.history.filter(h => h.kind === "chapter").forEach(h => Object.keys(h.chStats || {}).forEach(ch => add(h.subj, ch, h.date)));
+  Object.entries(S.plan).forEach(([id, v]) => { const m = /^w\d+-([a-z]+)-(.+)$/.exec(id); if (m && typeof v === "number") add(m[1], m[2], v); });
+  if (added) try { localStorage.setItem("cyw.revise", JSON.stringify(S.revise)); } catch (e) {}
+}
+
 function dueRevisions() {
+  seedRevisions();
   const t = todayIso();
   return Object.entries(S.revise).filter(([, v]) => v.due && v.due <= t)
     .map(([k, v]) => { const [subj, ch] = k.split("|"); return { subj, ch, ...v, late: -daysUntil(v.due) }; })
@@ -7482,7 +7503,7 @@ function dateSheetCard() {
   return `<div class="card stack">
     <span class="label">Board exam date sheet</span>
     <p class="muted" style="font-size:.9rem">Enter each paper's date when CBSE publishes the date sheet (usually in December). Exam mode switches on ${EXAM_MODE_DAYS} days before the first paper, and the Dashboard then plans each day for the next paper.</p>
-    <div>${SUBJ_KEYS.map(k => `<div class="ds-row"><span class="subj-h ${k}">${SUBJECTS[k].short}</span><input type="date" data-act="ds" data-subj="${k}" value="${esc(S.dateSheet[k] || "")}" aria-label="${SUBJECTS[k].short} paper date"></div>`).join("")}</div>
+    <div>${SUBJ_KEYS.map(k => `<div class="ds-row"><span class="subj-h ${k}">${SUBJECTS[k].short}</span><span class="row" style="gap:8px">${S.dateSheet[k] ? "" : `<span class="muted" style="font-size:.85rem">Not set</span>`}<input type="date" data-act="ds" data-subj="${k}" value="${esc(S.dateSheet[k] || "")}" aria-label="${SUBJECTS[k].short} paper date"></span></div>`).join("")}</div>
     <label class="row muted" style="font-size:.9rem;gap:8px"><input type="checkbox" data-act="exam-mode" ${store.get("examModeOn", false) ? "checked" : ""}> Turn exam mode on now (for school pre-boards)</label>
   </div>`;
 }
@@ -7549,7 +7570,6 @@ view.addEventListener("change", e => {
   } else if (a === "exam-mode") { store.set("examModeOn", el.checked); render(); }
 });
 
-if ((location.hash || "").slice(1) === "revise") { S.page = "revise"; render(); }
 </script>
 <script>
 /* Weekly report for a parent: the last 7 days of tests, plan ticks, revision and weak chapters as plain text,

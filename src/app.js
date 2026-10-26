@@ -401,7 +401,7 @@ function pageProgress() {
     <div class="stack">${sub.chapters.map(c => { const a = acc[c.id]; const p = a ? pct(a[0], a[1]) : null;
       return `<div class="row" style="gap:12px"><span style="flex:1 1 200px;min-width:0">${esc(c.name)}</span><span style="flex:2 1 160px">${p === null ? `<span class="muted" style="font-size:.85rem">Not tested</span>` : bar(p, barClass(p))}</span><span class="num" style="width:7ch;text-align:right">${p === null ? "" : p + "%"}</span></div>`; }).join("")}</div></div>
   <div class="card stack"><h2>Test history</h2>
-    ${hist.length ? `<div class="table-wrap"><table class="hist"><thead><tr><th>Date</th><th>Subject</th><th>Test</th><th>Time</th><th style="text-align:right">Score</th></tr></thead><tbody>${hist.map(h => `<tr><td class="num">${fmtDate(h.date)}</td><td>${SUBJECTS[h.subj].short}</td><td>${esc(h.title)}</td><td class="num">${mmss(h.secs)}</td><td class="num">${h.score}/${h.max} (${pct(h.score, h.max)}%)</td></tr>`).join("")}</tbody></table></div>` : `<p class="muted">No tests yet.</p>`}
+    ${hist.length ? `<div class="table-wrap"><table class="hist full"><thead><tr><th>Date</th><th>Subject</th><th>Test</th><th>Time</th><th style="text-align:right">Score</th></tr></thead><tbody>${hist.map(h => `<tr><td class="num">${fmtDate(h.date)}</td><td>${SUBJECTS[h.subj].short}</td><td>${esc(h.title)}</td><td class="num">${mmss(h.secs)}</td><td class="num">${h.score}/${h.max} (${pct(h.score, h.max)}%)</td></tr>`).join("")}</tbody></table></div>` : `<p class="muted">No tests yet.</p>`}
   </div>
   <div class="row">${S.confirm === "reset" ? `<span class="confirm row">Erase all test history and plan ticks on this device? <button class="btn small" data-act="reset">Erase</button><button class="btn small" data-act="cancel">Cancel</button></span>` : `<button class="btn" data-act="ask-reset">Reset progress</button>`}</div>`;
 }
@@ -425,6 +425,9 @@ function render() {
   const fn = { home: pageHome, plan: pagePlan, topics: pageTopics, papers: pagePapers, hot: pageHot, tests: pageTests, progress: pageProgress, jee: pageJee, ...EXTRA_PAGES }[S.page] || pageHome;
   view.innerHTML = fn();
   document.querySelectorAll("#nav button").forEach(b => b.setAttribute("aria-current", b.dataset.page === S.page ? "page" : "false"));
+  // On phones the nav is a horizontal strip: keep the current page's tab in view.
+  const rail = document.querySelector(".rail"), cur = document.querySelector('#nav button[aria-current="page"]');
+  if (rail && cur && rail.scrollWidth > rail.clientWidth) rail.scrollLeft = cur.offsetLeft - (rail.clientWidth - cur.offsetWidth) / 2;
   clearInterval(timerId);
   if (S.test) timerId = setInterval(tick, 1000);
 }
@@ -470,4 +473,5 @@ view.addEventListener("input", e => { if (e.target.dataset.act === "txt" && S.te
 
 const fromHash = (location.hash || "").slice(1);
 if (PAGES.includes(fromHash)) S.page = fromHash;
-render();
+// First render once every script has loaded, so pages extended by later scripts (prep.js, coach.js, print.js) are complete.
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", render); else render();

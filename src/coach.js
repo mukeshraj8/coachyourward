@@ -53,7 +53,22 @@ function finishRevision(subj, ch, ok) {
   else S.revise[k] = { s: cur.s + 1, due: addDays(todayIso(), REVISE_GAPS[cur.s + 1]) };
   saveRevise();
 }
+// Chapters tested or ticked as learnt before spaced revision existed join the schedule, a day after that test or tick.
+// Saved without marking progress as changed, so an older copy on this device never overrides newer progress in the account.
+function seedRevisions() {
+  let added = false;
+  const add = (subj, ch, when) => {
+    const k = revKey(subj, ch);
+    if (S.revise[k] || !SUBJECTS[subj] || !chapterOf(subj, ch)) return;
+    S.revise[k] = { s: 0, due: addDays(isoOf(new Date(when)), REVISE_GAPS[0]) }; added = true;
+  };
+  S.history.filter(h => h.kind === "chapter").forEach(h => Object.keys(h.chStats || {}).forEach(ch => add(h.subj, ch, h.date)));
+  Object.entries(S.plan).forEach(([id, v]) => { const m = /^w\d+-([a-z]+)-(.+)$/.exec(id); if (m && typeof v === "number") add(m[1], m[2], v); });
+  if (added) try { localStorage.setItem("cyw.revise", JSON.stringify(S.revise)); } catch (e) {}
+}
+
 function dueRevisions() {
+  seedRevisions();
   const t = todayIso();
   return Object.entries(S.revise).filter(([, v]) => v.due && v.due <= t)
     .map(([k, v]) => { const [subj, ch] = k.split("|"); return { subj, ch, ...v, late: -daysUntil(v.due) }; })
@@ -263,7 +278,7 @@ function dateSheetCard() {
   return `<div class="card stack">
     <span class="label">Board exam date sheet</span>
     <p class="muted" style="font-size:.9rem">Enter each paper's date when CBSE publishes the date sheet (usually in December). Exam mode switches on ${EXAM_MODE_DAYS} days before the first paper, and the Dashboard then plans each day for the next paper.</p>
-    <div>${SUBJ_KEYS.map(k => `<div class="ds-row"><span class="subj-h ${k}">${SUBJECTS[k].short}</span><input type="date" data-act="ds" data-subj="${k}" value="${esc(S.dateSheet[k] || "")}" aria-label="${SUBJECTS[k].short} paper date"></div>`).join("")}</div>
+    <div>${SUBJ_KEYS.map(k => `<div class="ds-row"><span class="subj-h ${k}">${SUBJECTS[k].short}</span><span class="row" style="gap:8px">${S.dateSheet[k] ? "" : `<span class="muted" style="font-size:.85rem">Not set</span>`}<input type="date" data-act="ds" data-subj="${k}" value="${esc(S.dateSheet[k] || "")}" aria-label="${SUBJECTS[k].short} paper date"></span></div>`).join("")}</div>
     <label class="row muted" style="font-size:.9rem;gap:8px"><input type="checkbox" data-act="exam-mode" ${store.get("examModeOn", false) ? "checked" : ""}> Turn exam mode on now (for school pre-boards)</label>
   </div>`;
 }
@@ -330,4 +345,3 @@ view.addEventListener("change", e => {
   } else if (a === "exam-mode") { store.set("examModeOn", el.checked); render(); }
 });
 
-if ((location.hash || "").slice(1) === "revise") { S.page = "revise"; render(); }
