@@ -80,17 +80,17 @@ function paperArchive() {
 }
 
 function paperItem(it, subj) {
-  if (it.text !== undefined) return `<div class="card passage stack">${it.title ? `<span class="label">${esc(it.title)}</span>` : ""}<div>${esc(it.text)}</div></div>`;
+  if (it.text !== undefined) return `<div class="card passage stack">${it.title ? `<span class="label">${esc(it.title)}</span>` : ""}<div>${esc(it.text)}</div>${typeof figHtml === "function" ? figHtml(it) : ""}</div>`;
   const ch = it.ch ? `<span class="label">${esc(chName(subj, it.ch))}</span>` : "<span></span>";
   if (it.o) return `<div class="card q-card">
     <div class="row spread">${ch}<span class="tag marks">1 mark</span></div>
-    <p class="q"><span class="qnum">Q${esc(it.n)}.</span> ${esc(it.q)}</p>
+    <p class="q"><span class="qnum">Q${esc(it.n)}.</span> ${esc(it.q)}</p>${typeof figHtml === "function" ? figHtml(it) : ""}
     <div class="opts-static">${it.o.map((o, j) => `<div data-o="${j}">(${"ABCD"[j]}) ${esc(o)}</div>`).join("")}</div>
     <details data-act="reveal"><summary>Answer</summary><div class="solution"><b>(${"ABCD"[it.a]}) ${esc(it.o[it.a])}</b>\n${esc(it.e)}</div></details>
   </div>`;
   return `<div class="card q-card">
     <div class="row spread">${ch}<span class="tag marks">${it.marks} mark${it.marks > 1 ? "s" : ""}</span></div>
-    <p class="q"><span class="qnum">Q${esc(it.n)}.</span> ${esc(it.q)}</p>
+    <p class="q"><span class="qnum">Q${esc(it.n)}.</span> ${esc(it.q)}</p>${typeof figHtml === "function" ? figHtml(it) : ""}
     <details><summary>Model answer</summary><div class="stack"><div class="solution">${esc(it.ans)}</div>
       ${it.pts && it.pts.length ? `<div class="table-wrap"><table class="points"><tbody><tr><td colspan="2"><span class="label">How the marks are given</span></td></tr>${it.pts.map(([p, m]) => `<tr><td>${esc(p)}</td><td>${m}</td></tr>`).join("")}</tbody></table></div>` : ""}
       ${it.tip ? `<div class="tip"><b>Scoring tip:</b> ${esc(it.tip)}</div>` : ""}</div></details>
@@ -120,12 +120,12 @@ const markNum = m => {
 
 function sitPaper(id) {
   const p = paperById(id); if (!p) return;
-  const mcq = [], written = []; let ctx = "";
+  const mcq = [], written = []; let ctx = "", ctxFig = null;
   for (const it of paperItems(p)) {
-    if (it.text !== undefined) { ctx = (it.title ? it.title + "\n" : "") + it.text; continue; }
-    const q = (ctx ? ctx + "\n\n" : "") + "Q" + it.n + ". " + it.q; ctx = "";
-    if (it.o) mcq.push({ ch: it.ch || "paper", q, o: it.o, a: it.a, e: it.e });
-    else written.push({ ch: it.ch || "paper", q, marks: it.marks, a: it.ans, points: it.pts && it.pts.length ? it.pts.map(([t, m]) => [t, markNum(m)]) : [["Matches the model answer", it.marks]] });
+    if (it.text !== undefined) { ctx = (it.title ? it.title + "\n" : "") + it.text; ctxFig = it.fig || null; continue; }
+    const q = (ctx ? ctx + "\n\n" : "") + "Q" + it.n + ". " + it.q, fig = it.fig || ctxFig; ctx = ""; ctxFig = null;
+    if (it.o) mcq.push({ ch: it.ch || "paper", q, o: it.o, a: it.a, e: it.e, fig });
+    else written.push({ ch: it.ch || "paper", q, marks: it.marks, fig, a: it.ans, points: it.pts && it.pts.length ? it.pts.map(([t, m]) => [t, markNum(m)]) : [["Matches the model answer", it.marks]] });
   }
   S.paperId = null; S.subj = p.subj;
   S.test = { kind: "paper", subj: p.subj, title: `${p.year} ${p.exam} (Set ${p.set})`, mcq, written, ans: {}, txt: {}, start: Date.now(), dur: p.mins * 60 };

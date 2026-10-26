@@ -328,10 +328,10 @@ function testView() {
     </div>
   </div>
   ${t.mcq.length ? `<h2>Section A · Multiple choice</h2>` : ""}
-  ${t.mcq.map((q, i) => `<div class="card q-card"><div class="row spread"><span class="qnum">Q${i + 1}</span><span class="tag marks">1 mark</span></div><p class="q">${esc(q.q)}</p>
+  ${t.mcq.map((q, i) => `<div class="card q-card"><div class="row spread"><span class="qnum">Q${i + 1}</span><span class="tag marks">1 mark</span></div><p class="q">${esc(q.q)}</p>${typeof figHtml === "function" ? figHtml(q) : ""}
     <div class="opts">${q.o.map((o, j) => `<label class="opt"><input type="radio" name="q${i}" value="${j}" data-act="ans" data-i="${i}" ${t.ans[i] === j ? "checked" : ""}><span>(${"abcd"[j]}) ${esc(o)}</span></label>`).join("")}</div></div>`).join("")}
   ${t.written.length ? `<h2>Written answers</h2><p class="muted">Write the answer on paper (or below) as you would in the exam. After submitting, compare with the model answer and tick the marking points you earned.</p>` : ""}
-  ${t.written.map((q, i) => `<div class="card q-card"><div class="row spread"><span class="qnum">W${i + 1} · ${esc(chName(t.subj, q.ch))}</span><span class="tag marks">${q.marks} marks</span></div><p class="q">${esc(q.q)}</p>
+  ${t.written.map((q, i) => `<div class="card q-card"><div class="row spread"><span class="qnum">W${i + 1} · ${esc(chName(t.subj, q.ch))}</span><span class="tag marks">${q.marks} marks</span></div><p class="q">${esc(q.q)}</p>${typeof figHtml === "function" ? figHtml(q) : ""}
     <textarea id="w${i}" data-act="txt" data-i="${i}" placeholder="Rough answer (optional)">${esc(t.txt[i] || "")}</textarea></div>`).join("")}
   <div><button class="btn primary" data-act="ask-submit">Submit test</button></div>`;
 }
@@ -369,14 +369,14 @@ function resultView() {
     <div class="card stack"><span class="label">By chapter</span>${Object.entries(r.chStats).map(([ch, [a, b]]) => `<div class="row spread" style="font-size:.9rem"><span>${esc(chName(r.subj, ch))}</span><span class="num">${a}/${b}</span></div>`).join("")}</div>
   </div>
   ${r.written.length && !r.saved ? `<div class="card stack" style="border-color:var(--accent)"><h2>Step 2: mark your written answers</h2><p class="muted">Compare what you wrote with the model answer. Tick only the points you clearly wrote. Be strict; the board examiner will be.</p></div>
-    ${r.written.map((q, i) => `<div class="card q-card"><div class="row spread"><span class="qnum">W${i + 1}</span><span class="tag marks">${q.marks} marks</span></div><p class="q">${esc(q.q)}</p>
+    ${r.written.map((q, i) => `<div class="card q-card"><div class="row spread"><span class="qnum">W${i + 1}</span><span class="tag marks">${q.marks} marks</span></div><p class="q">${esc(q.q)}</p>${typeof figHtml === "function" ? figHtml(q) : ""}
       ${r.txt[i] ? `<div><span class="label">Your answer</span><div class="solution">${esc(r.txt[i])}</div></div>` : ""}
       <div><span class="label">Model answer</span><div class="solution">${esc(q.a)}</div></div>
       <div class="stack" style="gap:4px">${q.points.map(([p, m], j) => `<label class="task"><input type="checkbox" data-act="self" data-k="${i}-${j}" ${r.self[i + "-" + j] ? "checked" : ""}><span>${esc(p)}</span><span class="num go">${m}</span></label>`).join("")}</div></div>`).join("")}
     <div><button class="btn primary" data-act="save-result">Save final score</button></div>` : ""}
   ${r.saved ? `<div class="row"><span class="tag good">Saved to Progress</span><button class="btn" data-act="retake">Take another ${esc(SUBJECTS[r.subj].short)} test</button><button class="btn ghost" data-act="go" data-page="progress">See progress</button></div>` : ""}
   ${r.mcq.length ? `<h2>Review: MCQs (${r.right}/${r.mcq.length}, ${mcqP}%)</h2>` : ""}
-  ${r.mcq.map((q, i) => { const a = r.ans[i]; return `<div class="card q-card"><div class="row spread"><span class="qnum">Q${i + 1} · ${esc(chName(r.subj, q.ch))}</span>${a === q.a ? `<span class="tag good">Correct</span>` : a === undefined ? `<span class="tag bad">Not answered</span>` : `<span class="tag bad">Wrong</span>`}</div><p class="q">${esc(q.q)}</p>
+  ${r.mcq.map((q, i) => { const a = r.ans[i]; return `<div class="card q-card"><div class="row spread"><span class="qnum">Q${i + 1} · ${esc(chName(r.subj, q.ch))}</span>${a === q.a ? `<span class="tag good">Correct</span>` : a === undefined ? `<span class="tag bad">Not answered</span>` : `<span class="tag bad">Wrong</span>`}</div><p class="q">${esc(q.q)}</p>${typeof figHtml === "function" ? figHtml(q) : ""}
     <div class="opts">${q.o.map((o, j) => `<div class="opt ${j === q.a ? "right" : j === a ? "wrong" : ""}"><span>(${"abcd"[j]}) ${esc(o)}</span></div>`).join("")}</div>
     <p class="muted" style="font-size:.92rem"><b>Why:</b> ${esc(q.e)}</p></div>`; }).join("")}`;
 }
