@@ -416,6 +416,78 @@ add("mb26-1:15", bpt(0.3, "A B C P Q"));
   f.pts({ F: at(O, r, 135), G: at(O, r, 90), E: at(O, r, 45) });
   add("mb26-2:Case study 3", f.dot("O").lab("O:ne H:w D:e A:sw C:se B:s F:nw G:n E:ne")); }
 
+/* ---------- 2026-27 sample papers ---------- */
+{ // Maths Standard Q22(B): triangle PQS with R on PS extended, equal angles at Q and S
+  const P = [30, 175], Rr = [295, 175], S = lerp(P, Rr, 0.25), Q = [105, 40];
+  add("m27s-sqp:22", new Fig(320, 205).pts({ P, Q, R: Rr, S }).seg("P-R P-Q Q-R Q-S")
+    .ang("Q", "P", "R", "x", 26).ang("S", "Q", "P", "x", 22)
+    .mid("P", "Q", "6 cm", -16, -2).mid("P", "S", "3 cm", 0, 14).lab("P:sw Q:n R:se S:s")); }
+
+{ // Maths Standard Q29: parallelogram circumscribing a circle
+  const a = 130, b = 75, O = [160, 115], r = a * b / Math.hypot(a, b);
+  const A = [O[0] - a, O[1]], B = [O[0], O[1] - b], C = [O[0] + a, O[1]], D = [O[0], O[1] + b];
+  const f = new Fig(320, 230).pts({ O, A, B, C, D, S: foot(O, A, B), P: foot(O, B, C), Q: foot(O, C, D), R: foot(O, D, A) });
+  add("m27s-sqp:29", f.poly("A B C D").circle("O", r).dot("O").lab("A:w B:n C:e D:s O:se S:nw P:ne Q:se R:sw")); }
+
+{ // Maths Standard Q32: pool PQRS inside the 50 m by 40 m park ABCD, strip of width x
+  const s = 4.4, ox = 36, oy = 30, W = 50 * s, H = 40 * s, g = 8 * s;
+  const D = [ox, oy], C = [ox + W, oy], B = [ox + W, oy + H], A = [ox, oy + H];
+  const P = [ox + g, oy + g], Q = [ox + W - g, oy + g], Rr = [ox + W - g, oy + H - g], S = [ox + g, oy + H - g];
+  const f = new Fig(ox * 2 + W, oy * 2 + H).pts({ A, B, C, D, P, Q, R: Rr, S });
+  f.poly("A B C D").poly("P Q R S").text(ox + W / 2, oy + H + 24, "50 m", "small").text(18, oy + H / 2 + 4, "40 m", "small");
+  add("m27s-sqp:32", f.lab("A:sw B:se C:ne D:nw P:nw Q:ne R:se S:sw").mid("S", "A", "x", 12, 0)); }
+
+{ // Maths Standard Q35: (a) kite seen by Manish and by Mahesh on a building; (b) lighthouse and two ships
+  const A = [25, 180], E = [170, 180], Bb = [170, 70], Cc = [270, 180], Dd = [270, 130], Rr = [170, 130];
+  const fa = new Fig(300, 205).pts({ A, B: Bb, C: Cc, D: Dd, E, R: Rr });
+  fa.seg2([10, 180], [292, 180]).seg("A-B B-D C-D").dash("B-E D-R")
+    .ang("A", "E", "B", "30°", 30).ang("D", "R", "B", "45°", 26)
+    .mid("A", "B", "200 m", -12, -6).mid("C", "D", "50 m", 14, 0).lab("A:sw B:n C:se D:ne E:s R:w");
+  const B2 = [40, 180], A2 = [40, 50], C2 = [150, 180], D2 = [280, 180], H2 = [285, 50];
+  const fb = new Fig(300, 205).pts({ A: A2, B: B2, C: C2, D: D2, H: H2 });
+  fb.seg2([20, 180], [292, 180]).seg("A-B A-C A-D").dash("A-H")
+    .ang("A", "H", "C", "45°", 44).ang("A", "H", "D", "30°", 76)
+    .mid("C", "D", "200 m", 0, 18).lab("A:n B:sw C:s D:s");
+  add("m27s-sqp:35", pair(fa, "(a)", fb, "(b)")); }
+
+{ // Maths Standard Q37: tangents PA and PB to the circular garden
+  const O = [90, 115], r = 55, Pp = [215, 115], [A, Bb] = tangents(Pp, O, r);
+  const f = new Fig(275, 230).pts({ O, P: Pp, A, B: Bb }).circle("O", r).seg("O-A O-B P-A P-B").dash("O-P")
+    .right("A", "O", "P").right("B", "O", "P").dot("O")
+    .mid("O", "A", "9 m", -8, -6).mid("O", "P", "18 m", 0, 16);
+  add("m27s-sqp:Case study for Q37 · Circular meditation garden", f.lab("O:w P:e A:n B:s")); }
+
+{ // Maths Basic Q27(A): circle touching AX at P, AY at R and BC at Q
+  const A = [25, 120], O = [150, 120], r = (O[0] - A[0]) * Math.sin(25 * R);
+  const X = at(A, 215, 25), Y = at(A, 215, -25), Q = [O[0] + r, 120];
+  const Rr = foot(O, A, Y), P = foot(O, A, X);
+  const Bb = inter(A, X, Q, [Q[0], 0]), Cc = inter(A, Y, Q, [Q[0], 0]);
+  const f = new Fig(255, 240).pts({ A, O, P, R: Rr, Q, B: Bb, C: Cc, X, Y }).circle("O", r).seg("A-X A-Y B-C").dot("O");
+  add("mb27-sqp:27", f.lab("A:w P:nw R:sw Q:e B:n C:s X:ne Y:se")); }
+
+{ // Maths Basic Q35: (a) drone above the accident site; (b) statue on a pedestal
+  const h = 100, B1 = [30, 180], A1 = [30, 180 - h], C1 = [30 + h / Math.sqrt(3), 180], D1 = [30 + h * Math.sqrt(3), 180], H1 = [285, 80];
+  const fa = new Fig(300, 205).pts({ A: A1, B: B1, C: C1, D: D1, H: H1 });
+  fa.seg2([20, 180], [292, 180]).seg("A-B A-C A-D").dash("A-H")
+    .ang("A", "H", "C", "60°", 30).ang("A", "H", "D", "30°", 62)
+    .mid("C", "D", "12 min", 0, 18).lab("A:n B:sw C:s D:s");
+  const A2 = [40, 180], B2 = [130, 180], C2 = [130, 90], D2 = [130, 24];
+  const fb = new Fig(220, 205).pts({ A: A2, B: B2, C: C2, D: D2 });
+  fb.seg2([20, 180], [205, 180]).seg("A-D B-D A-C").right("B", "A", "D")
+    .ang("A", "B", "C", "45°", 46).ang("A", "B", "D", "60°", 74)
+    .mid("C", "D", "1.6 m", 20, 0).mid("B", "C", "h", 12, 0).lab("A:sw B:s C:e D:n");
+  add("mb27-sqp:35", pair(fa, "(a)", fb, "(b)")); }
+
+{ // Maths Basic Q36: the craft fan, a 60° sector of radius 10 cm with a 4 cm handle
+  const O = [40, 200], Ro = 140, ri = 56, a0 = 15, a1 = 75;
+  const f = new Fig(205, 230).pts({ O });
+  f.path(f.arcD(O, Ro, a0, a1) + "L" + f1(at(O, ri, a1)[0]) + " " + f1(at(O, ri, a1)[1]) + f.arcD(O, ri, a1, a0) + "Z", "shade");
+  f.seg2(O, at(O, Ro, a0)).seg2(O, at(O, Ro, a1)).arc(O, Ro, a0, a1).arc(O, ri, a0, a1);
+  f.text(at(O, ri / 2 + 6, a0 - 2)[0] + 14, at(O, ri / 2, a0)[1] + 4, "4 cm", "small");
+  f.text(at(O, (Ro + ri) / 2, a1)[0] - 16, at(O, (Ro + ri) / 2, a1)[1], "10 cm", "small");
+  f.ang("O", at(O, Ro, a0), at(O, Ro, a1), "60°", 34).dot("O");
+  add("mb27-sqp:Case study for Q36 · The craft fan", f.lab("O:sw")); }
+
 /* ================= Science ================= */
 { const f = new Fig(260, 190), lv = ["T1", "T2", "T3", "T4", "T5"];
   for (let i = 0; i < 5; i++) { const y = 170 - i * 32, w = 220 - i * 40; f.path(`M${130 - w / 2} ${y}h${w}l-20 -32h${-(w - 40)}Z`); f.text(130, y - 12, lv[i], "small"); }

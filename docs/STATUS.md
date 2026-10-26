@@ -12,14 +12,14 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 
 | Subject | Chapters with notes | MCQs | Written (board-style) | Hot questions | Solved past papers |
 | --- | --- | --- | --- | --- | --- |
-| Maths (Standard and Basic) | 14 | 155 | 53 | 20 | 14 papers: Standard 2019, 2022–2026 (two 2026 sets); Basic 2020, 2022–2026 (two 2026 sets) |
-| Science | 13 | 159 | 49 | 16 | 8 papers: 2019, 2020, 2022–2026 (two 2026 sets) |
-| English Language & Literature | 27 | 197 | 33 | 9 | 6 papers: 2022–2026 (two 2026 sets) |
-| Sanskrit 119 (Manika) | 19 | 155 | 29 | 8 | 3 papers: 2025, 2026 (two sets). Code 119 started in 2025; older papers are code 122 |
-| Social Science | 23 | 202 | 58 | 14 | 5 papers: 2022–2026 |
-| **Total** | **96** | **868** | **222** | **67** | **36 solved papers**, plus links to older official papers |
+| Maths (Standard and Basic) | 14 | 155 | 53 | 20 | 16 papers: Standard 2019, 2022–2026 (two 2026 sets) and the 2026–27 sample paper; Basic 2020, 2022–2026 (two 2026 sets) and the 2026–27 sample paper |
+| Science | 13 | 159 | 49 | 16 | 9 papers: 2019, 2020, 2022–2026 (two 2026 sets) and the 2026–27 sample paper |
+| English Language & Literature | 27 | 197 | 33 | 9 | 7 papers: 2022–2026 (two 2026 sets) and the 2026–27 sample paper |
+| Sanskrit 119 (Manika) | 19 | 155 | 29 | 8 | 4 papers: 2025, 2026 (two sets) and the 2026–27 sample paper. Code 119 started in 2025; older papers and the sample paper are code 122 |
+| Social Science | 23 | 202 | 58 | 14 | 6 papers: 2022–2026 and the 2026–27 sample paper |
+| **Total** | **96** | **868** | **222** | **67** | **42 solved papers**, including the six official 2026–27 sample papers, plus links to older official papers |
 
-- **Past papers:** every solved paper has model answers and the marking scheme's value points. Each one downloads as a question-paper PDF and as an answers PDF. All 72 PDFs were checked, and every question has its answer.
+- **Past papers:** every solved paper has model answers and the marking scheme's value points. Each one downloads as a question-paper PDF and as an answers PDF. All 72 PDFs were checked, and every question has its answer. The six 2026–27 sample papers are marked `sqp`, and the weekly mock on the Dashboard offers them before the older papers.
 - **JEE Foundation:** 37 stretch and Class 11 bridge problems with solutions.
 - **Accuracy:** new content was independently fact-checked. Nine errors were found and fixed before release.
 
@@ -70,7 +70,7 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 | Closed test, then apply for production | Mukesh | Sent for review 26 Oct 2026 (India, RekhankClosedTesters, 29 testers). After approval, testers keep it 14 days, then apply for production |
 | Phone test: GitHub APK and Play internal-test build | Done | Both open full screen on a Realme (Android 10); sign-in, sync and a timed test work |
 | Update the exam date when CBSE publishes the date sheet | Student / parent | Revision → Date sheet (the first paper's date also sets the Dashboard countdown) |
-| Add the official CBSE 2026–27 sample papers and marking schemes | Claude | Released 21 Sep 2026 at cbseacademic.nic.in; needs that site allowed in the cloud environment's network settings |
+| Add the official CBSE 2026–27 sample papers and marking schemes | Done | All six added 26 Oct 2026 from cbseacademic.nic.in (Maths Standard and Basic, Science, English, Social Science, Sanskrit 122). The weekly mock now prefers them |
 | AI checking of written answers and ask-a-doubt | Mukesh, then Claude | Needs a decision on Claude API cost and the Firebase Blaze plan |
 | New Play build with the daily reminder | Claude | Build 5 is on GitHub Releases; upload its `.aab` to Play testing |
 | Optional: a private Play upload key | Claude | The current key is in the public repo; Google holds the real signing key |

@@ -192,7 +192,7 @@ service cloud.firestore {
 2. Run the validation check, done before every release so far. Every MCQ's chapter id must exist, `a` must be less than the number of options, written `points` must add up to `marks`, and every chapter should have MCQs.
 3. Rebuild with `sh scripts/build.sh`, open `index.html` locally, take a test in the new chapter, then commit and push.
 
-A new past paper is one `src/papers-<code><yy>.js` file calling `PAPERS.push({...})`, following an existing paper of the same subject.
+A new past paper is one `src/papers-<code><yy>.js` file calling `PAPERS.push({...})`, following an existing paper of the same subject. An official sample paper also sets `sqp: true`, which `weeklyMockPaper` in `coach.js` prefers when it picks the week's mock; its `qp` and `ms` are full `https://` links, since the sample papers sit on cbseacademic.nic.in rather than cbse.gov.in.
 
 ## 10. Quality checks used so far
 
