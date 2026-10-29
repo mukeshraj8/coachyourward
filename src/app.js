@@ -5,7 +5,7 @@ const store = {
   set(k, v) { try { localStorage.setItem("cyw." + k, JSON.stringify(v)); } catch (e) {} }
 };
 
-const PAGES = ["home", "plan", "topics", "papers", "hot", "tests", "revise", "progress", "jee"];
+const PAGES = ["home", "plan", "topics", "papers", "hot", "tests", "revise", "progress", "jee", "about"];
 const SUBJ_KEYS = ["maths", "science", "english", "sanskrit", "social"];
 const PLAN_START = "2026-10-26";
 const DAY = 864e5;
@@ -389,6 +389,32 @@ function tick() {
   if (left <= 0) submitTest();
 }
 
+/* ---------- about, official sources and disclaimer (shown on every page) ---------- */
+const SOURCES = [
+  ["cbse.gov.in", "https://www.cbse.gov.in/", "Central Board of Secondary Education: exam notices, date sheet, results"],
+  ["Question papers", "https://www.cbse.gov.in/cbsenew/question-paper.html", "Past board papers (cbse.gov.in)"],
+  ["Marking schemes", "https://www.cbse.gov.in/cbsenew/marking-scheme.html", "Official marking schemes (cbse.gov.in)"],
+  ["cbseacademic.nic.in", "https://cbseacademic.nic.in/", "CBSE Academic: 2026–27 curriculum and sample question papers"],
+  ["ncert.nic.in", "https://ncert.nic.in/textbook.php", "NCERT textbooks"]
+];
+const srcLink = ([name, url]) => `<a href="${url}" target="_blank" rel="noopener">${name}</a>`;
+const DISCLAIMER = "CoachYourWard is an independent study app. It is not affiliated with, endorsed by or representing CBSE, NCERT or any government body.";
+function siteFooter() {
+  return `<footer class="site-foot"><p>${DISCLAIMER} Official sources: ${srcLink(SOURCES[0])} (question papers, marking schemes), ${srcLink(SOURCES[3])} (syllabus, sample papers), ${srcLink(SOURCES[4])} (textbooks).</p>
+    <p><a href="#about" data-act="go" data-page="about">About and sources</a> · <a href="/privacy.html">Privacy policy</a></p></footer>`;
+}
+function pageAbout() {
+  return `<div class="head"><div><h1>About and sources</h1><p>Where the content in this app comes from.</p></div></div>
+  <div class="card stack" style="border-color:var(--accent)"><h2>Not a government app</h2><p style="margin:0">${DISCLAIMER} It was made by a parent to help a Class 10 student prepare. For anything official (exam dates, rules, results, admit cards), always check the CBSE website.</p></div>
+  <div class="card stack"><h2>Official sources</h2>
+    <div class="stack" style="gap:8px">${SOURCES.map(s => `<div>${srcLink(s)}<br><span class="muted" style="font-size:.9rem;overflow-wrap:anywhere">${s[2]} · ${s[1]}</span></div>`).join("")}</div></div>
+  <div class="card stack"><h2>What comes from where</h2><ul style="margin:0;padding-left:20px">
+    <li><b>Past papers and sample papers:</b> the questions are CBSE's own. Each solved paper links to its original question paper and marking scheme on cbse.gov.in or cbseacademic.nic.in.</li>
+    <li><b>Syllabus and chapter list:</b> follows the CBSE 2026–27 curriculum published on cbseacademic.nic.in.</li>
+    <li><b>Notes, practice questions, study plan and model answers:</b> written for this app, based on the NCERT textbooks and the CBSE syllabus. They are study aids, not official material.</li>
+  </ul></div>`;
+}
+
 /* ---------- progress & JEE ---------- */
 function pageProgress() {
   const acc = chapterAccuracy(S.subj), sub = SUBJECTS[S.subj];
@@ -422,8 +448,8 @@ function pageJee() {
 const EXTRA_PAGES = {};
 function render() {
   // Pages added by later scripts (coach.js) register in EXTRA_PAGES.
-  const fn = { home: pageHome, plan: pagePlan, topics: pageTopics, papers: pagePapers, hot: pageHot, tests: pageTests, progress: pageProgress, jee: pageJee, ...EXTRA_PAGES }[S.page] || pageHome;
-  view.innerHTML = fn();
+  const fn = { home: pageHome, plan: pagePlan, topics: pageTopics, papers: pagePapers, hot: pageHot, tests: pageTests, progress: pageProgress, jee: pageJee, about: pageAbout, ...EXTRA_PAGES }[S.page] || pageHome;
+  view.innerHTML = fn() + (S.test ? "" : siteFooter());
   document.querySelectorAll("#nav button").forEach(b => b.setAttribute("aria-current", b.dataset.page === S.page ? "page" : "false"));
   // On phones the nav is a horizontal strip: keep the current page's tab in view.
   const rail = document.querySelector(".rail"), cur = document.querySelector('#nav button[aria-current="page"]');

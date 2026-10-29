@@ -196,6 +196,9 @@ select, input[type="date"] { font: inherit; padding: 6px 10px; border-radius: 8p
   .test-bar { top: calc(env(safe-area-inset-top, 0px) + 56px); }
   h1 { font-size: 1.5rem; }
 }
+.site-foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+.site-foot p { margin: 0 0 6px; }
+@media print { .site-foot { display: none; } }
 @media (prefers-reduced-motion: no-preference) { .bar > i { transition: width .4s ease; } }
 </style>
 
@@ -214,6 +217,7 @@ select, input[type="date"] { font: inherit; padding: 6px 10px; border-radius: 8p
       <button data-page="progress"><span class="dot"></span>Progress</button>
       <div class="nav-sep"></div>
       <button data-page="jee"><span class="dot"></span>JEE Foundation</button>
+      <button data-page="about"><span class="dot"></span>About and sources</button>
     </nav>
     <div class="rail-foot">Progress is saved on this device.</div>
   </aside>

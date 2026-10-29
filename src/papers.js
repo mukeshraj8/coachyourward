@@ -74,7 +74,7 @@ function paperArchive() {
     ${mine.length ? `<div class="paper-list">${mine.map(p => `<button class="paper-tile" data-act="paper" data-v="${p.id}">
       <b>${p.year}</b><strong>${esc(p.exam)}</strong><span>${esc(p.course ? p.course + " · " : "")}Set ${esc(p.set)} · ${p.marks} marks</span></button>`).join("")}</div>`
       : `<p class="muted">Solved papers for this subject are being added.</p>`}
-    <p class="muted" style="font-size:.9rem">Every question is the board's own, with a model answer written the way the official marking scheme gives marks.</p>
+    <p class="muted" style="font-size:.9rem">Every question is the board's own, with a model answer written the way the official marking scheme gives marks. Source: CBSE, <a href="${CBSE_QP}" target="_blank" rel="noopener">question papers</a> and <a href="${CBSE_MS}" target="_blank" rel="noopener">marking schemes</a> on cbse.gov.in, and <a href="https://cbseacademic.nic.in/" target="_blank" rel="noopener">sample papers</a> on cbseacademic.nic.in. Each paper links to its original.</p>
   </div>
   ${links.length ? `<details class="card"><summary>More years: official papers and marking schemes (PDF zips from CBSE)</summary>
     <div class="link-list">${links.map(([y, ex, qp, ms, c]) => `<div>${y} · ${esc(ex)}${c ? " · " + esc(c) : ""}: <a href="${cbseUrl(qp)}" target="_blank" rel="noopener">question paper</a> · <a href="${cbseUrl(ms)}" target="_blank" rel="noopener">marking scheme</a></div>`).join("")}</div></details>` : ""}`;

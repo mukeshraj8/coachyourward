@@ -89,3 +89,8 @@ The app is complete and in daily use as a website (study.rekhank.app), an instal
 Built: "Ask a doubt" page (text or photo) and "Check with AI" on every written answer after a test (typed answer or photo; the AI marks against the marking points and pre-ticks them).
 Server: `functions/index.js` with Claude, ChatGPT and Grok in a preference order with automatic fallback, an email allow-list and a daily cap.
 Not live until the steps in `docs/AI-SETUP.md` are done (Blaze plan, keys, deploy).
+
+## Play policy: Misleading Claims (29 Oct 2026)
+Google Play rejected the closed test for "Missing source link for government information".
+The app now shows on every page a disclaimer (not affiliated with CBSE, NCERT or any government body) with links to cbse.gov.in, cbseacademic.nic.in and ncert.nic.in, plus an "About and sources" page.
+Each solved paper already linked its official question paper and marking scheme; the Past Papers page now also names the sources. The store description must carry the same disclaimer and links.
