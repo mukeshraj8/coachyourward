@@ -37,7 +37,7 @@ Firestore → collection `config` → document `ai`:
 
 | Field | Type | Example | Meaning |
 |---|---|---|---|
-| `allowedEmails` | array of strings | `son@gmail.com` | **Required.** Only these Google accounts may use AI. |
+| `allowedEmails` | array of strings | `son@gmail.com` | **Required** (here or as `ALLOWED_EMAILS=a@gmail.com,b@gmail.com` in `functions/.env`, which is never committed). Only these Google accounts may use AI. |
 | `order` | array of strings | `anthropic`, `openai`, `xai` | Which service to try first, second, third. |
 | `dailyLimit` | number | `40` | Successful AI answers per student per day. Failed tries don't count. |
 | `models` | map | `anthropic` → map `check: claude-sonnet-5-5` | Override a model for `check` (marking) or `doubt`. |

@@ -5,7 +5,7 @@
    - Order and models come from the Firestore doc config/ai (editable in the Firebase console, no redeploy),
      falling back to DEFAULTS below. The first configured provider is tried first; on a network error,
      timeout, bad key, rate limit, server error or refusal the next one is tried.
-   - Only emails listed in config/ai.allowedEmails may use it, up to dailyLimit successful calls a day each.
+   - Only emails listed in config/ai.allowedEmails (or ALLOWED_EMAILS in functions/.env) may use it, up to dailyLimit successful calls a day each.
      Failed attempts are not counted. Every call is logged in aiLog with the provider that answered. */
 const { onRequest } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
@@ -136,7 +136,8 @@ async function loadConfig() {
   return {
     order, models,
     dailyLimit: Number(c.dailyLimit) > 0 ? Number(c.dailyLimit) : DEFAULTS.dailyLimit,
-    allowedEmails: (Array.isArray(c.allowedEmails) ? c.allowedEmails : DEFAULTS.allowedEmails).map(e => String(e).trim().toLowerCase())
+    // config/ai wins; otherwise ALLOWED_EMAILS from functions/.env (comma-separated, kept off GitHub).
+    allowedEmails: (Array.isArray(c.allowedEmails) ? c.allowedEmails : (process.env.ALLOWED_EMAILS || "").split(",")).map(e => String(e).trim().toLowerCase()).filter(Boolean)
   };
 }
 
