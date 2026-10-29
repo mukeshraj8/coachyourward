@@ -50,7 +50,7 @@ function aiPrepImage(file) {
   });
 }
 
-const aiVia = r => r && r.provider ? `<span class="muted" style="font-size:.8rem">Answered by ${esc(AI_PROVIDER_NAMES[r.provider] || r.provider)}${typeof r.left === "number" ? ` · ${r.left} left today` : ""}</span>` : "";
+const aiVia = (r, verb = "Answered") => r && r.provider ? `<span class="muted" style="font-size:.8rem">${verb} by ${esc(AI_PROVIDER_NAMES[r.provider] || r.provider)}${typeof r.left === "number" ? ` · ${r.left} left today` : ""}</span>` : "";
 const aiPhotoInput = (act, i) => `<label class="muted" style="font-size:.9rem">Photo (optional): <input class="ai-file" type="file" accept="image/*" capture="environment" data-act="${act}"${i !== undefined ? ` data-i="${i}"` : ""}></label>`;
 const aiThumb = (src, act, i) => `<div class="ai-thumb"><img src="${src}" alt="Photo to send"><button class="btn small ghost" data-act="${act}"${i !== undefined ? ` data-i="${i}"` : ""}>Remove photo</button></div>`;
 
@@ -65,7 +65,7 @@ function aiCheckBlock(r, i) {
     out += `<div><b>AI marks: ${a.total}/${r.written[i].marks}</b>${a.readable ? "" : ` <span class="tag bad">Couldn't read the photo</span>`}</div>
       <div>${r.written[i].points.map(([p], j) => `<div class="ai-pt"><span>${esc(p)}${a.points[j].note ? `<br><span class="muted">${esc(a.points[j].note)}</span>` : ""}</span><span class="num">${a.points[j].awarded}/${a.points[j].max}</span></div>`).join("")}</div>
       ${a.feedback ? `<p style="margin:0">${esc(a.feedback)}</p>` : ""}
-      <p class="muted" style="font-size:.85rem;margin:0">The ticks above are set from the AI marking. Change any you disagree with.</p>${aiVia(a)}`;
+      <p class="muted" style="font-size:.85rem;margin:0">The ticks above are set from the AI marking. Change any you disagree with.</p>${aiVia(a, "Marked")}`;
   } else {
     out += `<p class="muted" style="font-size:.9rem;margin:0">Type the answer above while sitting the test, or take a photo of the written answer. AI marks it against the board's marking points.</p>`;
     out += img ? aiThumb(img, "ai-img-del", i) : aiPhotoInput("ai-img", i);
